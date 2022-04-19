@@ -12,7 +12,7 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 
 ## Installation
 ### Manual
-- Install all the [dependencies](##Dependencies) 
+- Install all the [dependencies](#Dependencies) 
 - Clone this repo with:
 ```
 git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
