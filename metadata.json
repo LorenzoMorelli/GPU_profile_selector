@@ -4,7 +4,7 @@
 	"shell-version" : [
 		"3.14","3.16","3.18","3.20","3.22","3.24","3.26","3.28","3.30","3.32","3.34","3.36","3.38","40","41","42"
 	],
-	"url" : "",
+	"url" : "https://github.com/LorenzoMorelli/GPU_profile_selector",
 	"uuid" : "GPU_profile_selector@lorenzo9904.gmail.com",
 	"version" : 1
 }
