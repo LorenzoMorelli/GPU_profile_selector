@@ -1,10 +1,10 @@
 {
-	"description" : "Add under power option a menu for selecting the GPU profile",
+	"description" : "A simple gnome shell extension for switching GPU profiles on Nvidia Optimus systems (i.e laptops with Intel + Nvidia or AMD + Nvidia configurations). In particular this extension is a graphic interface for envycontrol (https://github.com/geminis3/envycontrol) program.",
 	"name" : "GPU profile selector",
 	"shell-version" : [
 		"3.14","3.16","3.18","3.20","3.22","3.24","3.26","3.28","3.30","3.32","3.34","3.36","3.38","40","41","42"
 	],
 	"url" : "https://github.com/LorenzoMorelli/GPU_profile_selector",
 	"uuid" : "GPU_profile_selector@lorenzo9904.gmail.com",
-	"version" : 1
+	"version" : 1.1
 }
