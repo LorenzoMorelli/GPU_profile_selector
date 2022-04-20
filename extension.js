@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Util = imports.misc.util;
 
 const BLACKLIST_PATH = '/etc/modprobe.d/blacklist-nvidia.conf';
 const UDEV_INTEGRATED_PATH = '/lib/udev/rules.d/50-remove-nvidia.rules';
@@ -42,10 +43,10 @@ class Extension {
     }
 
     _change_profile_with_priveleged_exec(profile) {
-        let args = ["envycontrol", "-s " + profile]
+        let args = ["| pkexec envycontrol -s " + profile]
         try {
             let proc = Gio.Subprocess.new(
-                ['pkexec'].concat(args),
+                ['yes'].concat(args),
                 Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
             );
     
@@ -54,8 +55,9 @@ class Extension {
                     let [, stdout, stderr] = proc.communicate_utf8_finish(res);
     
                     // Failure
-                    if (!proc.get_successful())
+                    if (!proc.get_successful()) {
                         throw new Error(stderr);
+                    }
     
                     // Success
                     log(stdout);
@@ -78,8 +80,9 @@ class Extension {
             this._hybrid_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.remove_child(this.icon_selector);
             this._integrated_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('pkexec envycontrol -s integrated');
-            this._change_profile_with_priveleged_exec("integrated");
+            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s integrated');
+            //this._change_profile_with_priveleged_exec("integrated");
+            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s integrated"])
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -88,8 +91,9 @@ class Extension {
             this._integrated_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.remove_child(this.icon_selector);
             this._hybrid_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('pkexec envycontrol -s hybrid');
-            this._change_profile_with_priveleged_exec("hybrid");
+            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s hybrid');
+            //this._change_profile_with_priveleged_exec("hybrid");
+            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s hybrid"])
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -98,8 +102,9 @@ class Extension {
             this._integrated_menu_item.remove_child(this.icon_selector);
             this._hybrid_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('pkexec envycontrol -s nvidia');
-            this._change_profile_with_priveleged_exec("nvidia");
+            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s nvidia');
+            //this._change_profile_with_priveleged_exec("nvidia");
+            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s nvidia"])
         });
 
         // set icon_selector on current status profile
