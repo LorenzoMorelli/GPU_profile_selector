@@ -1,5 +1,4 @@
 const Main = imports.ui.main;
-//const St = imports.gi.St;
 const {St, GLib} = imports.gi;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
@@ -13,64 +12,34 @@ const UDEV_INTEGRATED_PATH = '/lib/udev/rules.d/50-remove-nvidia.rules';
 const XORG_PATH = '/etc/X11/xorg.conf';
 const MODESET_PATH = '/etc/modprobe.d/nvidia.conf';
 const ICON_SIZE = 3;
+const ICON_SELECTOR_FILE_NAME = '/icon.svg';
 
-let myPopup, panelLabel;
 
 class Extension {
-    constructor() {
-        this.icon_selector = new St.Icon({
-            //icon_name : 'security-low-symbolic',
-            gicon : Gio.icon_new_for_string( Me.dir.get_path() + '/icon.svg' ),
-            style_class : 'system-status-icon',
-            icon_size: ICON_SIZE
-        });
-    }
-
     _getCurrentProfile() {
+        // init files needed
+        let black_list_file = Gio.File.new_for_path(BLACKLIST_PATH);
+        let udev_integrated_file = Gio.File.new_for_path(UDEV_INTEGRATED_PATH);
+        let xorg_file = Gio.File.new_for_path(XORG_PATH);
+        let modeset_file = Gio.File.new_for_path(MODESET_PATH);
+
         // check in which mode you are
-        let [ok_BLACKLIST_PATH, out_BLACKLIST_PATH, err_BLACKLIST_PATH, exit_BLACKLIST_PATH] = GLib.spawn_command_line_sync("ls " + BLACKLIST_PATH);
-        let [ok_UDEV_INTEGRATED_PATH, out_UDEV_INTEGRATED_PATH, err_UDEV_INTEGRATED_PATH, exit_UDEV_INTEGRATED_PATH] = GLib.spawn_command_line_sync("ls " + UDEV_INTEGRATED_PATH);
-        let [ok_XORG_PATH, out_XORG_PATH, err_XORG_PATH, exit_XORG_PATH] = GLib.spawn_command_line_sync("ls " + XORG_PATH);
-        let [ok_MODESET_PATH, out_MODESET_PATH, err_MODESET_PATH, exit_MODESET_PATH] = GLib.spawn_command_line_sync("ls " + MODESET_PATH);
-        
-        if (out_BLACKLIST_PATH.toString().length > 0 && out_UDEV_INTEGRATED_PATH.toString().length > 0) {
+        if (black_list_file.query_exists(null) && udev_integrated_file.query_exists(null)) {
             return "integrated";
-        } else if (out_XORG_PATH.toString().length > 0 && out_MODESET_PATH.toString().length > 0) {
+        } else if (xorg_file.query_exists(null) && modeset_file.query_exists(null)) {
             return "nvidia";
         } else {
             return "hybrid";
         }
     }
 
-    _change_profile_with_priveleged_exec(profile) {
-        let args = ["| pkexec envycontrol -s " + profile]
-        try {
-            let proc = Gio.Subprocess.new(
-                ['yes'].concat(args),
-                Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE
-            );
-    
-            proc.communicate_utf8_async(null, null, (proc, res) => {
-                try {
-                    let [, stdout, stderr] = proc.communicate_utf8_finish(res);
-    
-                    // Failure
-                    if (!proc.get_successful()) {
-                        throw new Error(stderr);
-                    }
-    
-                    // Success
-                    log(stdout);
-                } catch (e) {
-                    logError(e);
-                }
-            });
-        } catch (e) {
-            logError(e);
-        }
-    }   
-
     enable() {
+        this.icon_selector = new St.Icon({
+            gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_SELECTOR_FILE_NAME),
+            style_class : 'system-status-icon',
+            icon_size: ICON_SIZE
+        });
+        
         // get power menu section
         this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
 
@@ -80,8 +49,7 @@ class Extension {
             this._hybrid_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.remove_child(this.icon_selector);
             this._integrated_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s integrated');
-            //this._change_profile_with_priveleged_exec("integrated");
+            // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s integrated"])
         });
 
@@ -91,8 +59,7 @@ class Extension {
             this._integrated_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.remove_child(this.icon_selector);
             this._hybrid_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s hybrid');
-            //this._change_profile_with_priveleged_exec("hybrid");
+            // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s hybrid"])
         });
 
@@ -102,8 +69,7 @@ class Extension {
             this._integrated_menu_item.remove_child(this.icon_selector);
             this._hybrid_menu_item.remove_child(this.icon_selector);
             this._nvidia_menu_item.add_child(this.icon_selector);
-            //let [ok, out, err, exit] = GLib.spawn_command_line_sync('yes | pkexec envycontrol -s nvidia');
-            //this._change_profile_with_priveleged_exec("nvidia");
+            // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s nvidia"])
         });
 
@@ -151,20 +117,11 @@ class Extension {
         this._nvidia_menu_item.destroy();
 
         this.separator_menu.destroy();
+
+        this.icon_selector = null;
     }
 }
 
-let extension;
-
 function init() {
-    extension = new Extension();
+    return new Extension();
 }
-
-function enable() {
-    extension.enable();
-}
-
-function disable() {
-    extension.disable();
-}
-
