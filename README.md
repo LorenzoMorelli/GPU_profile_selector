@@ -6,20 +6,26 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 
 ![screenshot example](./extension_screenshot.png)
 
+
 ## Dependencies
+- [bash](https://www.gnu.org/software/bash/)
 - [pkexec command](https://command-not-found.com/pkexec)
 - [envycontrol](https://github.com/geminis3/envycontrol)
 
+
 ## Installation
+
+### Gnome-shell Extension website
+- Install all the [dependencies](#Dependencies)
+- Enable extension in official [Gnome Extension](https://extensions.gnome.org/extension/5009/gpu-profile-selector/) store
+
 ### Manual
-- Install all the [dependencies](#Dependencies) 
+- Install all the [dependencies](#Dependencies)
 - Clone this repo with:
 ```
 git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
 ```
 
-### TODO
-public on official gnome shell extension https://extensions.gnome.org/
 
 ## Debuging
 
@@ -29,6 +35,8 @@ public on official gnome shell extension https://extensions.gnome.org/
 ### For looking updates using wayland (open a new wayland session in a window)
 ```dbus-run-session -- gnome-shell --nested --wayland```
 
+
 ## TODO
 - Add a confirm dialog with restart later and restart now
 - After profile is changed add a text at the end (reboot needed)
+- Add support for other shell (not only bash)
