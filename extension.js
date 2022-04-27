@@ -44,31 +44,31 @@ class Extension {
         this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
 
         // init integrated GPU profile menu item and its click listener
-        this._integrated_menu_item = new PopupMenu.PopupMenuItem('Integrated');
-        this._integrated_menu_item_id = this._integrated_menu_item.connect('activate', () => {
-            this._hybrid_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.remove_child(this.icon_selector);
-            this._integrated_menu_item.add_child(this.icon_selector);
+        this.integrated_menu_item = new PopupMenu.PopupMenuItem('Integrated');
+        this.integrated_menu_item_id = this.integrated_menu_item.connect('activate', () => {
+            this.hybrid_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.remove_child(this.icon_selector);
+            this.integrated_menu_item.add_child(this.icon_selector);
             // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s integrated"])
         });
 
         // init hybrid GPU profile menu item and its click listener
-        this._hybrid_menu_item = new PopupMenu.PopupMenuItem('Hybrid');
-        this._hybrid_menu_item_id = this._hybrid_menu_item.connect('activate', () => {
-            this._integrated_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.remove_child(this.icon_selector);
-            this._hybrid_menu_item.add_child(this.icon_selector);
+        this.hybrid_menu_item = new PopupMenu.PopupMenuItem('Hybrid');
+        this.hybrid_menu_item_id = this.hybrid_menu_item.connect('activate', () => {
+            this.integrated_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.remove_child(this.icon_selector);
+            this.hybrid_menu_item.add_child(this.icon_selector);
             // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s hybrid"])
         });
 
         // init nvidia GPU profile menu item and its click listener
-        this._nvidia_menu_item = new PopupMenu.PopupMenuItem('Nvidia');
-        this._nvidia_menu_item_id = this._nvidia_menu_item.connect('activate', () => {
-            this._integrated_menu_item.remove_child(this.icon_selector);
-            this._hybrid_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.add_child(this.icon_selector);
+        this.nvidia_menu_item = new PopupMenu.PopupMenuItem('Nvidia');
+        this.nvidia_menu_item_id = this.nvidia_menu_item.connect('activate', () => {
+            this.integrated_menu_item.remove_child(this.icon_selector);
+            this.hybrid_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.add_child(this.icon_selector);
             // exec switch
             Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s nvidia"])
         });
@@ -76,47 +76,51 @@ class Extension {
         // set icon_selector on current status profile
         let current_profile = this._getCurrentProfile();
         if(current_profile === "integrated") {
-            this._hybrid_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.remove_child(this.icon_selector);
-            this._integrated_menu_item.add_child(this.icon_selector);
+            this.hybrid_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.remove_child(this.icon_selector);
+            this.integrated_menu_item.add_child(this.icon_selector);
         } else if(current_profile === "nvidia") {
-            this._integrated_menu_item.remove_child(this.icon_selector);
-            this._hybrid_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.add_child(this.icon_selector);
+            this.integrated_menu_item.remove_child(this.icon_selector);
+            this.hybrid_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.add_child(this.icon_selector);
         } else {
-            this._integrated_menu_item.remove_child(this.icon_selector);
-            this._nvidia_menu_item.remove_child(this.icon_selector);
-            this._hybrid_menu_item.add_child(this.icon_selector);
+            this.integrated_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.remove_child(this.icon_selector);
+            this.hybrid_menu_item.add_child(this.icon_selector);
         }
 
         // add all menu item to power menu
-        this.separator_menu = new PopupMenu.PopupSeparatorMenuItem();
-        this.power_menu.addMenuItem(this.separator_menu);
-        this.power_menu.addMenuItem(this._integrated_menu_item);
-        this.power_menu.addMenuItem(this._hybrid_menu_item);
-        this.power_menu.addMenuItem(this._nvidia_menu_item);
+        this.separator_menu_item = new PopupMenu.PopupSeparatorMenuItem();
+        this.power_menu.addMenuItem(this.separator_menu_item);
+        this.power_menu.addMenuItem(this.integrated_menu_item);
+        this.power_menu.addMenuItem(this.hybrid_menu_item);
+        this.power_menu.addMenuItem(this.nvidia_menu_item);
     }
 
     disable() {
-        if (this._integrated_menu_item_id) {
-            this._integrated_menu_item.disconnect(this._integrated_menu_item_id);
-            this._integrated_menu_item_id = 0;
+        if (this.integrated_menu_item_id) {
+            this.integrated_menu_item.disconnect(this.integrated_menu_item_id);
+            this.integrated_menu_item_id = 0;
         }
-        this._integrated_menu_item.destroy();
+        this.integrated_menu_item.destroy();
+        this.integrated_menu_item = null;
 
-        if (this._hybrid_menu_item_id) {
-            this._hybrid_menu_item.disconnect(this._hybrid_menu_item_id);
-            this._hybrid_menu_item_id = 0;
+        if (this.hybrid_menu_item_id) {
+            this.hybrid_menu_item.disconnect(this.hybrid_menu_item_id);
+            this.hybrid_menu_item_id = 0;
         }
-        this._hybrid_menu_item.destroy();
+        this.hybrid_menu_item.destroy();
+        this.hybrid_menu_item = null;
 
-        if (this._nvidia_menu_item_id) {
-            this._nvidia_menu_item.disconnect(this._nvidia_menu_item_id);
-            this._nvidia_menu_item_id = 0;
+        if (this.nvidia_menu_item_id) {
+            this.nvidia_menu_item.disconnect(this.nvidia_menu_item_id);
+            this.nvidia_menu_item_id = 0;
         }
-        this._nvidia_menu_item.destroy();
+        this.nvidia_menu_item.destroy();
+        this.nvidia_menu_item = null;
 
-        this.separator_menu.destroy();
+        this.separator_menu_item.destroy();
+        this.separator_menu_item = null;
 
         this.icon_selector = null;
     }
