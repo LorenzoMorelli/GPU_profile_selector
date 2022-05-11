@@ -1,5 +1,5 @@
 {
-	"description" : "A simple gnome shell extension for switching GPU profiles on Nvidia Optimus systems (i.e laptops with Intel + Nvidia or AMD + Nvidia configurations). In particular this extension is a graphic interface for envycontrol (https://github.com/geminis3/envycontrol) program.",
+	"description" : "You need also envycontrol(https://github.com/geminis3/envycontrol) for make this extension working. A simple gnome shell extension for switching GPU profiles on Nvidia Optimus systems (i.e laptops with Intel + Nvidia or AMD + Nvidia configurations). In particular this extension is a graphic interface for envycontrol (https://github.com/geminis3/envycontrol) program.",
 	"name" : "GPU profile selector",
 	"shell-version" : [
 		"3.36",
@@ -10,5 +10,5 @@
 	],
 	"url" : "https://github.com/LorenzoMorelli/GPU_profile_selector",
 	"uuid" : "GPU_profile_selector@lorenzo9904.gmail.com",
-	"version" : 3
+	"version" : 4
 }
