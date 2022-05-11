@@ -14,6 +14,11 @@ const MODESET_PATH = '/etc/modprobe.d/nvidia.conf';
 const ICON_SIZE = 3;
 const ICON_SELECTOR_FILE_NAME = '/icon.svg';
 
+const GPU_PROFILE_INTEGRATED = "integrated"
+const GPU_PROFILE_HYBRID = "hybrid"
+const GPU_PROFILE_NVIDIA = "nvidia"
+const COMMAND_TO_SWITCH_GPU_PROFILE = "yes | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
+
 
 class Extension {
     _getCurrentProfile() {
@@ -25,11 +30,11 @@ class Extension {
 
         // check in which mode you are
         if (black_list_file.query_exists(null) && udev_integrated_file.query_exists(null)) {
-            return "integrated";
+            return GPU_PROFILE_INTEGRATED;
         } else if (xorg_file.query_exists(null) && modeset_file.query_exists(null)) {
-            return "nvidia";
+            return GPU_PROFILE_NVIDIA;
         } else {
-            return "hybrid";
+            return GPU_PROFILE_HYBRID;
         }
     }
 
@@ -39,7 +44,8 @@ class Extension {
             style_class : 'system-status-icon',
             icon_size: ICON_SIZE
         });
-        
+
+
         // get power menu section
         this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
 
@@ -50,7 +56,7 @@ class Extension {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s integrated"])
+            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_INTEGRATED)]);
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -60,7 +66,7 @@ class Extension {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s hybrid"])
+            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_HYBRID)]);
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -70,16 +76,16 @@ class Extension {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', "yes | pkexec envycontrol -s nvidia"])
+            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_NVIDIA)]);
         });
 
         // set icon_selector on current status profile
         let current_profile = this._getCurrentProfile();
-        if(current_profile === "integrated") {
+        if(current_profile === GPU_PROFILE_INTEGRATED) {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
-        } else if(current_profile === "nvidia") {
+        } else if(current_profile === GPU_PROFILE_NVIDIA) {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
