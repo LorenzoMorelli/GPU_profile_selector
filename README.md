@@ -37,6 +37,6 @@ git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/sh
 
 
 ## TODO
-- Add a confirm dialog with restart later and restart now
-- After profile is changed add a text at the end (reboot needed)
-- Add support for other shell (not only bash)
+- Add a notify for the case that the user didn't choose to reboot.
+- After profile is changed add a text at the end (reboot needed).
+- Add support for other shell (not only bash).
