@@ -247,7 +247,7 @@ class AttachedToBatteryView {
 class Extension {
     enable() {
         this.power_menu = Main.panel.statusArea['aggregateMenu']._power;
-        if (this.power_menu !== null) {
+        if (this.power_menu === null) {
             this.extensionView = new TopBarView();
             Main.panel.addToStatusArea("GPU_SELECTOR", this.extensionView, 1);
         } else {
@@ -260,7 +260,7 @@ class Extension {
         this.extensionView.disable();
         // topbar popup must be also destroyed
         this.power_menu = Main.panel.statusArea['aggregateMenu']._power;
-        if (this.power_menu !== null) {
+        if (this.power_menu === null) {
             this.extensionView.destroy();
         }
         this.extensionView = null;
