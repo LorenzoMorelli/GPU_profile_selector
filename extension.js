@@ -8,6 +8,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Util = imports.misc.util;
 const Clutter = imports.gi.Clutter;
 
+
 const BLACKLIST_PATH = '/etc/modprobe.d/blacklist-nvidia.conf';
 const UDEV_INTEGRATED_PATH = '/lib/udev/rules.d/50-remove-nvidia.rules';
 const XORG_PATH = '/etc/X11/xorg.conf';
@@ -22,10 +23,10 @@ const COMMAND_TO_SWITCH_GPU_PROFILE = "yes | pkexec envycontrol -s {profile}; gn
 
 function _getCurrentProfile() {
     // init files needed
-    let black_list_file = Gio.File.new_for_path(BLACKLIST_PATH);
-    let udev_integrated_file = Gio.File.new_for_path(UDEV_INTEGRATED_PATH);
-    let xorg_file = Gio.File.new_for_path(XORG_PATH);
-    let modeset_file = Gio.File.new_for_path(MODESET_PATH);
+    const black_list_file = Gio.File.new_for_path(BLACKLIST_PATH);
+    const udev_integrated_file = Gio.File.new_for_path(UDEV_INTEGRATED_PATH);
+    const xorg_file = Gio.File.new_for_path(XORG_PATH);
+    const modeset_file = Gio.File.new_for_path(MODESET_PATH);
 
     // check in which mode you are
     if (black_list_file.query_exists(null) && udev_integrated_file.query_exists(null)) {
@@ -35,6 +36,25 @@ function _getCurrentProfile() {
     } else {
         return GPU_PROFILE_HYBRID;
     }
+}
+
+function is_battery_plugged() {
+    const directory = Gio.File.new_for_path('/sys/class/power_supply/');
+        // Synchronous, blocking method
+    const iter = directory.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+
+    while (true) {
+        const info = iter.next_file(null);
+    
+        if (info == null) {
+            break;
+        }
+            
+        if(info.get_name().includes("BAT")) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const TopBarView = GObject.registerClass(
@@ -246,21 +266,21 @@ class AttachedToBatteryView {
 
 class Extension {
     enable() {
-        this.power_menu = Main.panel.statusArea['aggregateMenu']._power;
-        if (this.power_menu === null) {
+        // if there is no battery, there is no power management panel, so the extension moves to TopBar
+        if (is_battery_plugged()) {
+            this.extensionView = new AttachedToBatteryView();
+        } else {
             this.extensionView = new TopBarView();
             Main.panel.addToStatusArea("GPU_SELECTOR", this.extensionView, 1);
-        } else {
-            this.extensionView = new AttachedToBatteryView();
         }
         this.extensionView.enable();
     }
 
     disable() {
         this.extensionView.disable();
-        // topbar popup must be also destroyed
-        this.power_menu = Main.panel.statusArea['aggregateMenu']._power;
-        if (this.power_menu === null) {
+        // also topbar popup must be destroyed
+        this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
+        if (this.power_menu == null) {
             this.extensionView.destroy();
         }
         this.extensionView = null;
