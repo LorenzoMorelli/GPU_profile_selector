@@ -30,13 +30,19 @@ git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/sh
 ## Debuging and packaging
 
 ### For looking command line logs
-```journalctl -f -o cat /usr/bin/gnome-shell```
+```
+journalctl -f -o cat /usr/bin/gnome-shell
+```
 
 ### For looking updates using wayland (open a new wayland session in a window)
-```dbus-run-session -- gnome-shell --nested --wayland```
+```
+dbus-run-session -- gnome-shell --nested --wayland
+```
 
 ### For packaging the extension source
-```gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com --extra-source="LICENSE" --extra-source="icon.svg" --extra-source="README.md"```
+```
+gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com --extra-source="LICENSE" --extra-source="icon.svg" --extra-source="README.md"
+```
 
 ## TODO
 - Add a notify for the case that the user didn't choose to reboot.
