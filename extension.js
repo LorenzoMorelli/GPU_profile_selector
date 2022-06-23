@@ -279,8 +279,7 @@ class Extension {
     disable() {
         this.extensionView.disable();
         // also topbar popup must be destroyed
-        this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
-        if (this.power_menu == null) {
+        if (is_battery_plugged()) {
             this.extensionView.destroy();
         }
         this.extensionView = null;
