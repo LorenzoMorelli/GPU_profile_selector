@@ -15,6 +15,9 @@ const XORG_PATH = '/etc/X11/xorg.conf';
 const MODESET_PATH = '/etc/modprobe.d/nvidia.conf';
 const ICON_SIZE = 3;
 const ICON_SELECTOR_FILE_NAME = '/icon.svg';
+const ICON_INTEL_FILE_NAME = '/intel_icon_plain.svg';
+const ICON_NVIDIA_FILE_NAME = '/nvidia_icon_plain.svg';
+const ICON_HYBRID_FILE_NAME = '/hybrid_icon_plain.svg';
 
 const GPU_PROFILE_INTEGRATED = "integrated"
 const GPU_PROFILE_HYBRID = "hybrid"
@@ -69,7 +72,7 @@ class TopBarView extends PanelMenu.Button {
             style_class : 'system-status-icon',
             icon_size: ICON_SIZE
         });
-        
+
         // init integrated GPU profile menu item and its click listener
         this.integrated_menu_item = new PopupMenu.PopupMenuItem('Integrated');
         this.integrated_menu_item_id = this.integrated_menu_item.connect('activate', () => {
@@ -77,9 +80,12 @@ class TopBarView extends PanelMenu.Button {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.profile_label);
-            this.profile_label = new St.Label({ text : 'Integrated', y_align: Clutter.ActorAlign.CENTER})
-            this.add_child(this.profile_label);
+            this.remove_child(this.icon_top);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_INTEL_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
+            this.add_child(this.icon_top);
             // exec switch
             Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_INTEGRATED)]);
         });
@@ -91,9 +97,12 @@ class TopBarView extends PanelMenu.Button {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.profile_label);
-            this.profile_label = new St.Label({ text : 'Hybrid', y_align: Clutter.ActorAlign.CENTER})
-            this.add_child(this.profile_label);
+            this.remove_child(this.icon_top);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_HYBRID_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
+            this.add_child(this.icon_top);
             // exec switch
             Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_HYBRID)]);
         });
@@ -105,9 +114,12 @@ class TopBarView extends PanelMenu.Button {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.profile_label);
-            this.profile_label = new St.Label({ text : 'NVIDIA', y_align: Clutter.ActorAlign.CENTER})
-            this.add_child(this.profile_label);
+            this.remove_child(this.icon_top);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_NVIDIA_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
+            this.add_child(this.icon_top);
             // exec switch
             Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_NVIDIA)]);
         });
@@ -119,25 +131,37 @@ class TopBarView extends PanelMenu.Button {
         this.menu.addMenuItem(this.hybrid_menu_item);
         this.menu.addMenuItem(this.nvidia_menu_item);
 
+
+
         // check GPU profile
+
         const gpu_profile = _getCurrentProfile();
         if (gpu_profile === GPU_PROFILE_INTEGRATED) {
-            this.profile_label = new St.Label({ text : 'Integrated', y_align: Clutter.ActorAlign.CENTER})
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_INTEL_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
         } else if(gpu_profile === GPU_PROFILE_HYBRID) {
-            this.profile_label = new St.Label({ text : 'Hybrid', y_align: Clutter.ActorAlign.CENTER})
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_HYBRID_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
         } else {
-            this.profile_label = new St.Label({ text : 'NVIDIA', y_align: Clutter.ActorAlign.CENTER})
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
+            this.icon_top = new St.Icon({
+              gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_NVIDIA_FILE_NAME),
+              style_class: 'system-status-icon',
+            });
         }
-        this.add_child(this.profile_label);
+        this.add_child(this.icon_top);
     }
 
     disable() {
