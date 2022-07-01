@@ -41,7 +41,10 @@ dbus-run-session -- gnome-shell --nested --wayland
 
 ### For packaging the extension source
 ```
-gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com --extra-source="LICENSE" --extra-source="icon.svg" --extra-source="README.md"
+gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
+--extra-source="LICENSE" --extra-source="icon.png" \
+--extra-source="intel_icon_plain.svg" --extra-source="hybrid_icon_plain.svg" \
+--extra-source="nvidia_icon_plain.svg" --extra-source="README.md"
 ```
 
 ## TODO
