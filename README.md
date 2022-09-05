@@ -50,3 +50,4 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ## TODO
 - Add a notify for the case that the user didn't choose to reboot.
 - After profile is changed add a text at the end (reboot needed).
+- Add option panel for customizing EnvyControl settings.
