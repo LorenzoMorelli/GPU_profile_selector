@@ -26,7 +26,6 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
 ```
 
-
 ## Debuging and packaging
 
 ### For looking command line logs
@@ -34,12 +33,12 @@ git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/sh
 journalctl -f -o cat /usr/bin/gnome-shell
 ```
 
-### For looking updates using wayland (open a new wayland session in a window)
+### For looking updates using wayland (it opens a new wayland session in a window)
 ```
 dbus-run-session -- gnome-shell --nested --wayland
 ```
 
-### For packaging the extension source
+### Packaging the extension source for gnome extension website
 ```
 gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 --extra-source="LICENSE" --extra-source="icon.png" \
@@ -48,6 +47,6 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ```
 
 ## TODO
-- Add a notify for the case that the user didn't choose to reboot.
 - After profile is changed add a text at the end (reboot needed).
-- Add option panel for customizing EnvyControl settings.
+- Add a setting for allowing user to choose where to place the extension view between topbar and battery menu panel.
+- Add a notify for the case that the user didn't choose to reboot.
