@@ -4,6 +4,7 @@ const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Util = imports.misc.util;
 const Clutter = imports.gi.Clutter;
@@ -22,7 +23,8 @@ const ICON_HYBRID_FILE_NAME = '/hybrid_icon_plain.svg';
 const GPU_PROFILE_INTEGRATED = "integrated"
 const GPU_PROFILE_HYBRID = "hybrid"
 const GPU_PROFILE_NVIDIA = "nvidia"
-const COMMAND_TO_SWITCH_GPU_PROFILE = "yes | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
+//const COMMAND_TO_SWITCH_GPU_PROFILE = "yes | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
+const COMMAND_TO_SWITCH_GPU_PROFILE = "printf '%s\n' {choice1} {choice2} | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
 
 function _getCurrentProfile() {
     // init files needed
@@ -41,7 +43,7 @@ function _getCurrentProfile() {
     }
 }
 
-function is_battery_plugged() {
+function isBatteryPlugged() {
     const directory = Gio.File.new_for_path('/sys/class/power_supply/');
         // Synchronous, blocking method
     const iter = directory.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
@@ -60,10 +62,23 @@ function is_battery_plugged() {
     return false;
 }
 
+function _execSwitch(profile, c1, c2) {
+    // exec switch
+    Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE
+        .replace("{profile}", profile)
+        .replace("{choice1}", c1)
+        .replace("{choice2}", c2)
+    ]);
+}
+
 const TopBarView = GObject.registerClass(
-class TopBarView extends PanelMenu.Button {
-    _init() {
+class TopBarView extends PanelMenu.Button {  
+    _init(setting_rtd3, setting_force_composition_pipeline, setting_coolbits) {
         super._init(0);
+        // Load settings
+        this._setting_rtd3 = setting_rtd3;
+        this._setting_force_composition_pipeline = setting_force_composition_pipeline;
+        this._setting_coolbits = setting_coolbits;
     }
 
     enable() {
@@ -87,7 +102,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_INTEGRATED)]);
+            _execSwitch(GPU_PROFILE_INTEGRATED, "", "");
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -104,7 +119,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_HYBRID)]);
+            _execSwitch(GPU_PROFILE_HYBRID, this._setting_rtd3, "");
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -121,7 +136,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_NVIDIA)]);
+            _execSwitch(GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
         });
 
         // add all menu item to power menu
@@ -130,8 +145,6 @@ class TopBarView extends PanelMenu.Button {
         this.menu.addMenuItem(this.integrated_menu_item);
         this.menu.addMenuItem(this.hybrid_menu_item);
         this.menu.addMenuItem(this.nvidia_menu_item);
-
-
 
         // check GPU profile
 
@@ -194,6 +207,13 @@ class TopBarView extends PanelMenu.Button {
 });
 
 class AttachedToBatteryView {
+    _init(setting_rtd3, setting_force_composition_pipeline, setting_coolbits) {
+        // Load settings
+        this._setting_rtd3 = setting_rtd3;
+        this._setting_force_composition_pipeline = setting_force_composition_pipeline;
+        this._setting_coolbits = setting_coolbits;
+    }
+
     enable() {
         this.icon_selector = new St.Icon({
             gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_SELECTOR_FILE_NAME),
@@ -212,7 +232,7 @@ class AttachedToBatteryView {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_INTEGRATED)]);
+            _execSwitch(GPU_PROFILE_INTEGRATED, "", "");
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -222,7 +242,7 @@ class AttachedToBatteryView {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_HYBRID)]);
+            _execSwitch(GPU_PROFILE_HYBRID, this._setting_rtd3, "");
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -232,7 +252,7 @@ class AttachedToBatteryView {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
             // exec switch
-            Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE.replace("{profile}", GPU_PROFILE_NVIDIA)]);
+            _execSwitch(GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
         });
 
         // set icon_selector on current status profile
@@ -260,6 +280,7 @@ class AttachedToBatteryView {
     }
 
     disable() {
+
         if (this.integrated_menu_item_id) {
             this.integrated_menu_item.disconnect(this.integrated_menu_item_id);
             this.integrated_menu_item_id = 0;
@@ -290,11 +311,16 @@ class AttachedToBatteryView {
 
 class Extension {
     enable() {
+        settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+        setting_rtd3 = settings.get_boolean('rtd3') ? "y" : "n";
+		setting_force_composition_pipeline = settings.get_boolean('force-composition-pipeline') ? "y" : "n";
+		setting_coolbits = settings.get_boolean('coolbits') ? "y" : "n";
+
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
-        if (is_battery_plugged()) {
-            this.extensionView = new AttachedToBatteryView();
+        if (isBatteryPlugged()) {
+            this.extensionView = new AttachedToBatteryView(setting_rtd3, setting_force_composition_pipeline, setting_coolbits);
         } else {
-            this.extensionView = new TopBarView();
+            this.extensionView = new TopBarView(setting_rtd3, setting_force_composition_pipeline, setting_coolbits);
             Main.panel.addToStatusArea("GPU_SELECTOR", this.extensionView, 1);
         }
         this.extensionView.enable();
@@ -303,7 +329,7 @@ class Extension {
     disable() {
         this.extensionView.disable();
         // also topbar popup must be destroyed
-        if (!is_battery_plugged()) {
+        if (!isBatteryPlugged()) {
             this.extensionView.destroy();
         }
         this.extensionView = null;
