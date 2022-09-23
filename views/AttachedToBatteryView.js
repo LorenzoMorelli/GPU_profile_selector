@@ -12,11 +12,6 @@ const Clutter = imports.gi.Clutter;
 const {Utility} = Me.imports.models;
 
 const ICON_SIZE = 6;
-const ICON_SELECTOR_FILE_NAME = '/icon.png';
-
-const GPU_PROFILE_INTEGRATED = "integrated"
-const GPU_PROFILE_HYBRID = "hybrid"
-const GPU_PROFILE_NVIDIA = "nvidia"
 
 
 var AttachedToBatteryView = class {
@@ -29,7 +24,7 @@ var AttachedToBatteryView = class {
 
     enable() {
         this.icon_selector = new St.Icon({
-            gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_SELECTOR_FILE_NAME),
+            gicon : Gio.icon_new_for_string(Me.dir.get_path() + Utility.ICON_SELECTOR_FILE_NAME),
             style_class : 'system-status-icon',
             icon_size: ICON_SIZE
         });
@@ -45,7 +40,7 @@ var AttachedToBatteryView = class {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(GPU_PROFILE_INTEGRATED, "", "");
+            Utility.execSwitch(Utility.GPU_PROFILE_INTEGRATED, "", "");
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -55,7 +50,7 @@ var AttachedToBatteryView = class {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(GPU_PROFILE_HYBRID, this._setting_rtd3, "");
+            Utility.execSwitch(Utility.GPU_PROFILE_HYBRID, this._setting_rtd3, "");
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -65,16 +60,16 @@ var AttachedToBatteryView = class {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
+            Utility.execSwitch(Utility.GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
         });
 
         // set icon_selector on current status profile
         let current_profile = Utility.getCurrentProfile();
-        if(current_profile === GPU_PROFILE_INTEGRATED) {
+        if(current_profile === Utility.GPU_PROFILE_INTEGRATED) {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
-        } else if(current_profile === GPU_PROFILE_NVIDIA) {
+        } else if(current_profile === Utility.GPU_PROFILE_NVIDIA) {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);

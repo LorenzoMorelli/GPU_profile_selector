@@ -5,17 +5,15 @@ const BLACKLIST_PATH = '/etc/modprobe.d/blacklist-nvidia.conf';
 const UDEV_INTEGRATED_PATH = '/lib/udev/rules.d/50-remove-nvidia.rules';
 const XORG_PATH = '/etc/X11/xorg.conf';
 const MODESET_PATH = '/etc/modprobe.d/nvidia.conf';
-const ICON_SIZE = 6;
-const ICON_SELECTOR_FILE_NAME = '/icon.png';
-const ICON_INTEL_FILE_NAME = '/intel_icon_plain.svg';
-const ICON_NVIDIA_FILE_NAME = '/nvidia_icon_plain.svg';
-const ICON_HYBRID_FILE_NAME = '/hybrid_icon_plain.svg';
 
-const GPU_PROFILE_INTEGRATED = "integrated"
-const GPU_PROFILE_HYBRID = "hybrid"
-const GPU_PROFILE_NVIDIA = "nvidia"
-//const COMMAND_TO_SWITCH_GPU_PROFILE = "yes | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
 const COMMAND_TO_SWITCH_GPU_PROFILE = "printf '%s\n' {choice1} {choice2} | pkexec envycontrol -s {profile}; gnome-session-quit --reboot";
+
+var ICON_SELECTOR_FILE_NAME = '/img/icon.png';
+
+var GPU_PROFILE_INTEGRATED = "integrated"
+var GPU_PROFILE_HYBRID = "hybrid"
+var GPU_PROFILE_NVIDIA = "nvidia"
+
 
 
 function getCurrentProfile() {
