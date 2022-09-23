@@ -21,7 +21,7 @@ class Extension {
 		const setting_coolbits = settings.get_boolean('coolbits') ? "y" : "n";
 
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
-        if (Utility.isBatteryPlugged()) {
+        if (!Utility.isBatteryPlugged()) {
             this.extensionView = new AttachedToBatteryView.AttachedToBatteryView(setting_rtd3, setting_force_composition_pipeline, setting_coolbits);
         } else {
             this.extensionView = new TopBarView.TopBarView(setting_rtd3, setting_force_composition_pipeline, setting_coolbits);
