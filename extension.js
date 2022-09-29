@@ -33,7 +33,7 @@ class Extension {
     disable() {
         this.extensionView.disable();
         // also topbar popup must be destroyed
-        if (!isBatteryPlugged()) {
+        if (!Utility.isBatteryPlugged()) {
             this.extensionView.destroy();
         }
         this.extensionView = null;
