@@ -93,7 +93,6 @@ class TopBarView extends PanelMenu.Button {
         this.menu.addMenuItem(this.nvidia_menu_item);
 
         // check GPU profile
-
         const gpu_profile = Utility.getCurrentProfile();
         if (gpu_profile === Utility.GPU_PROFILE_INTEGRATED) {
             this.hybrid_menu_item.remove_child(this.icon_selector);
