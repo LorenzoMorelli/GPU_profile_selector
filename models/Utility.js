@@ -51,11 +51,27 @@ function isBatteryPlugged() {
     return false;
 }
 
-function execSwitch(profile, c1, c2) {
+function _execSwitch(profile, c1, c2) {
     // exec switch
     Util.spawn(['/bin/bash', '-c', COMMAND_TO_SWITCH_GPU_PROFILE
         .replace("{profile}", profile)
         .replace("{choice1}", c1)
         .replace("{choice2}", c2)
     ]);
+}
+
+function _isSettingActive(all_settings, setting_name) {
+    return all_settings.get_boolean(setting_name) ? "y" : "n";
+}
+
+function switchIntegrated() {
+    _execSwitch(GPU_PROFILE_INTEGRATED, "", "")
+}
+
+function switchHybrid(all_settings) {
+    _execSwitch(GPU_PROFILE_HYBRID, _isSettingActive(all_settings, "rtd3"), "")
+}
+
+function switchNvidia(all_settings) {
+    _execSwitch(GPU_PROFILE_NVIDIA, _isSettingActive(all_settings, "force-composition-pipeline"), _isSettingActive(all_settings, "coolbits"));
 }
