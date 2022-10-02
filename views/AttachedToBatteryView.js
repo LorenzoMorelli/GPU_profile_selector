@@ -15,11 +15,9 @@ const ICON_SIZE = 6;
 
 
 var AttachedToBatteryView = class {
-    constructor(setting_rtd3, setting_force_composition_pipeline, setting_coolbits) {
+    constructor(all_settings) {
         // Load settings
-        this._setting_rtd3 = setting_rtd3;
-        this._setting_force_composition_pipeline = setting_force_composition_pipeline;
-        this._setting_coolbits = setting_coolbits;
+        this._all_settings = all_settings;
     }
 
     enable() {
@@ -40,7 +38,7 @@ var AttachedToBatteryView = class {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_INTEGRATED, "", "");
+            Utility.switchIntegrated();
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -50,7 +48,7 @@ var AttachedToBatteryView = class {
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_HYBRID, this._setting_rtd3, "");
+            Utility.switchHybrid(this._all_settings);
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -60,7 +58,7 @@ var AttachedToBatteryView = class {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
+            Utility.switchNvidia(this._all_settings);
         });
 
         // set icon_selector on current status profile

@@ -19,12 +19,10 @@ const ICON_HYBRID_FILE_NAME = '/img/hybrid_icon_plain.svg';
 
 var TopBarView = GObject.registerClass(
 class TopBarView extends PanelMenu.Button {  
-    _init(setting_rtd3, setting_force_composition_pipeline, setting_coolbits) {
+    _init(all_settings) {
         super._init(0);
         // Load settings
-        this._setting_rtd3 = setting_rtd3;
-        this._setting_force_composition_pipeline = setting_force_composition_pipeline;
-        this._setting_coolbits = setting_coolbits;
+        this._all_settings = all_settings;
     }
 
     enable() {
@@ -48,7 +46,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_INTEGRATED, "", "");
+            Utility.switchIntegrated();
         });
 
         // init hybrid GPU profile menu item and its click listener
@@ -65,7 +63,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_HYBRID, this._setting_rtd3, "");
+            Utility.switchHybrid(this._all_settings);
         });
 
         // init nvidia GPU profile menu item and its click listener
@@ -82,7 +80,7 @@ class TopBarView extends PanelMenu.Button {
             });
             this.add_child(this.icon_top);
             // exec switch
-            Utility.execSwitch(Utility.GPU_PROFILE_NVIDIA, this._setting_force_composition_pipeline, this._setting_coolbits);
+            Utility.switchNvidia(this._all_settings);
         });
 
         // add all menu item to power menu
