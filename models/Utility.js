@@ -15,7 +15,6 @@ var GPU_PROFILE_HYBRID = "hybrid"
 var GPU_PROFILE_NVIDIA = "nvidia"
 
 
-
 function getCurrentProfile() {
     // init files needed
     const black_list_file = Gio.File.new_for_path(BLACKLIST_PATH);
