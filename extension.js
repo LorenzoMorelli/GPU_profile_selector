@@ -9,8 +9,8 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Util = imports.misc.util;
 const Clutter = imports.gi.Clutter;
 
-const {TopBarView, AttachedToBatteryView} = Me.imports.views;
-const {Utility} = Me.imports.models;
+const {TopBarView, AttachedToBatteryView} = Me.imports.ui;
+const {Utility} = Me.imports.lib;
 
 
 class Extension {
