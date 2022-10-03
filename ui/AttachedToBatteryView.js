@@ -9,18 +9,13 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Util = imports.misc.util;
 const Clutter = imports.gi.Clutter;
 
-const {Utility} = Me.imports.models;
+const {Utility} = Me.imports.lib;
 
 const ICON_SIZE = 6;
-const ICON_INTEL_FILE_NAME = '/img/intel_icon_plain.svg';
-const ICON_NVIDIA_FILE_NAME = '/img/nvidia_icon_plain.svg';
-const ICON_HYBRID_FILE_NAME = '/img/hybrid_icon_plain.svg';
 
 
-var TopBarView = GObject.registerClass(
-class TopBarView extends PanelMenu.Button {  
-    _init(all_settings) {
-        super._init(0);
+var AttachedToBatteryView = class {
+    constructor(all_settings) {
         // Load settings
         this._all_settings = all_settings;
     }
@@ -32,19 +27,16 @@ class TopBarView extends PanelMenu.Button {
             icon_size: ICON_SIZE
         });
 
+
+        // get power menu section
+        this.power_menu = Main.panel.statusArea['aggregateMenu']._power._item.menu;
+
         // init integrated GPU profile menu item and its click listener
         this.integrated_menu_item = new PopupMenu.PopupMenuItem('Integrated');
         this.integrated_menu_item_id = this.integrated_menu_item.connect('activate', () => {
-            // view stuff
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.icon_top);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_INTEL_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
-            this.add_child(this.icon_top);
             // exec switch
             Utility.switchIntegrated();
         });
@@ -52,16 +44,9 @@ class TopBarView extends PanelMenu.Button {
         // init hybrid GPU profile menu item and its click listener
         this.hybrid_menu_item = new PopupMenu.PopupMenuItem('Hybrid');
         this.hybrid_menu_item_id = this.hybrid_menu_item.connect('activate', () => {
-            // view stuff
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.icon_top);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_HYBRID_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
-            this.add_child(this.icon_top);
             // exec switch
             Utility.switchHybrid(this._all_settings);
         });
@@ -69,58 +54,39 @@ class TopBarView extends PanelMenu.Button {
         // init nvidia GPU profile menu item and its click listener
         this.nvidia_menu_item = new PopupMenu.PopupMenuItem('Nvidia');
         this.nvidia_menu_item_id = this.nvidia_menu_item.connect('activate', () => {
-            // view stuff
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
-            this.remove_child(this.icon_top);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_NVIDIA_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
-            this.add_child(this.icon_top);
             // exec switch
             Utility.switchNvidia(this._all_settings);
         });
 
-        // add all menu item to power menu
-        this.separator_menu_item = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(this.separator_menu_item);
-        this.menu.addMenuItem(this.integrated_menu_item);
-        this.menu.addMenuItem(this.hybrid_menu_item);
-        this.menu.addMenuItem(this.nvidia_menu_item);
-
-        // check GPU profile
-        const gpu_profile = Utility.getCurrentProfile();
-        if (gpu_profile === Utility.GPU_PROFILE_INTEGRATED) {
+        // set icon_selector on current status profile
+        let current_profile = Utility.getCurrentProfile();
+        if(current_profile === Utility.GPU_PROFILE_INTEGRATED) {
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.remove_child(this.icon_selector);
             this.integrated_menu_item.add_child(this.icon_selector);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_INTEL_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
-        } else if(gpu_profile === Utility.GPU_PROFILE_HYBRID) {
-            this.integrated_menu_item.remove_child(this.icon_selector);
-            this.nvidia_menu_item.remove_child(this.icon_selector);
-            this.hybrid_menu_item.add_child(this.icon_selector);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_HYBRID_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
-        } else {
+        } else if(current_profile === Utility.GPU_PROFILE_NVIDIA) {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
-            this.icon_top = new St.Icon({
-                gicon : Gio.icon_new_for_string(Me.dir.get_path() + ICON_NVIDIA_FILE_NAME),
-                style_class: 'system-status-icon',
-            });
+        } else {
+            this.integrated_menu_item.remove_child(this.icon_selector);
+            this.nvidia_menu_item.remove_child(this.icon_selector);
+            this.hybrid_menu_item.add_child(this.icon_selector);
         }
-        this.add_child(this.icon_top);
+
+        // add all menu item to power menu
+        this.separator_menu_item = new PopupMenu.PopupSeparatorMenuItem();
+        this.power_menu.addMenuItem(this.separator_menu_item);
+        this.power_menu.addMenuItem(this.integrated_menu_item);
+        this.power_menu.addMenuItem(this.hybrid_menu_item);
+        this.power_menu.addMenuItem(this.nvidia_menu_item);
     }
 
     disable() {
+
         if (this.integrated_menu_item_id) {
             this.integrated_menu_item.disconnect(this.integrated_menu_item_id);
             this.integrated_menu_item_id = 0;
@@ -147,4 +113,4 @@ class TopBarView extends PanelMenu.Button {
 
         this.icon_selector = null;
     }
-});
+}
