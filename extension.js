@@ -16,15 +16,15 @@ const {Utility} = Me.imports.lib;
 class Extension {
     enable() {
         const all_settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
-
+        
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
-        if (Utility.isBatteryPlugged()) {
-            this.extensionView = new AttachedToBatteryView.AttachedToBatteryView(all_settings);
+        if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
+            this.extensionView = AttachedToBatteryView.getAttachedToBatteryView(all_settings);
         } else {
             this.extensionView = new TopBarView.TopBarView(all_settings);
             Main.panel.addToStatusArea("GPU_SELECTOR", this.extensionView, 1);
+            this.extensionView.enable();
         }
-        this.extensionView.enable();
     }
 
     disable() {

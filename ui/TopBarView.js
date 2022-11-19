@@ -27,7 +27,7 @@ class TopBarView extends PanelMenu.Button {
 
     enable() {
         this.icon_selector = new St.Icon({
-            gicon : Gio.icon_new_for_string(Me.dir.get_path() + Utility.ICON_SELECTOR_FILE_NAME),
+            gicon : Gio.icon_new_for_string(Me.dir.get_path() + Utility.EXTENSION_ICON_FILE_NAME),
             style_class : 'system-status-icon',
             icon_size: ICON_SIZE
         });
