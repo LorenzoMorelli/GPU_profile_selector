@@ -53,3 +53,5 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 - After profile is changed add a text at the end (reboot needed).
 - Add a setting for allowing user to choose where to place the extension view between topbar and battery menu panel.
 - Add a notify for the case that the user didn't choose to reboot.
+- Change icon to styled gpu icon
+- Change the big V close the gpu profile with icon

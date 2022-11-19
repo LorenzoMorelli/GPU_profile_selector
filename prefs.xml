@@ -20,6 +20,36 @@
                         
                         <child>
                             <object class="GtkLabel">
+                                <property name="label" translatable="yes">General</property>
+                                <property name="hexpand">true</property>
+                                <property name="halign">1</property>
+                                <attributes>
+                                    <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+                                </attributes>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkBox">
+                                <property name="spacing">12</property>
+                                <property name="margin-start">12</property>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Force topbar view</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="halign">1</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkSwitch" id="field_force_topbar_view">
+                                        <property name="active">true</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkLabel">
                                 <property name="label" translatable="yes">Hybrid</property>
                                 <property name="hexpand">true</property>
                                 <property name="halign">1</property>
