@@ -15,13 +15,12 @@ const {Utility} = Me.imports.lib;
 
 const ICON_SIZE = 6;
 
-let glob_all_settings;
-
 
 const AttachedToBatteryToggle = GObject.registerClass(
 class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
-    constructor() {
-        super()
+    constructor(all_settings) {
+        super();
+        this.all_settings = all_settings;
     }
 
     _init() {
@@ -38,8 +37,8 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
         
         // You may also add sections of items to the menu
         this._itemsSection = new PopupMenu.PopupMenuSection();
-        this._itemsSection.addAction('Nvidia', () => Utility.switchNvidia(glob_all_settings));
-        this._itemsSection.addAction('Hybrid', () => Utility.switchHybrid(glob_all_settings));
+        this._itemsSection.addAction('Nvidia', () => Utility.switchNvidia(this.all_settings));
+        this._itemsSection.addAction('Hybrid', () => Utility.switchHybrid(this.all_settings));
         this._itemsSection.addAction('Integrated', () => Utility.switchIntegrated());
         this.menu.addMenuItem(this._itemsSection);
 
@@ -56,9 +55,8 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
 
 const AttachedToBatteryView = GObject.registerClass(
 class AttachedToBatteryView extends QuickSettings.SystemIndicator {
-    _init() {
+    _init(all_settings) {
         super._init();
-
         // Create the icon for the indicator
         this._indicator = this._addIndicator();
         //this._indicator.gicon = Gio.icon_new_for_string(Me.dir.get_path() + Utility.ICON_SELECTOR_FILE_NAME);
@@ -66,7 +64,7 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
         
         // Create the toggle and associate it with the indicator, being sure to
         // destroy it along with the indicator
-        this.quickSettingsItems.push(new AttachedToBatteryToggle());
+        this.quickSettingsItems.push(new AttachedToBatteryToggle(all_settings));
         
         // Add the indicator to the panel and the toggle to the menu
         QuickSettingsMenu._indicators.add_child(this);
@@ -81,8 +79,7 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
 });
 
 function getAttachedToBatteryView(all_settings) {
-    glob_all_settings = all_settings
-    return new AttachedToBatteryView();
+    return new AttachedToBatteryView(all_settings);
 }
 
 
