@@ -22,9 +22,14 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 ### Manual
 - Install all the [dependencies](#Dependencies)
 - Clone this repo with:
-```
-git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
-```
+  - If you are using Gnome 43 or above:
+  ```
+  git clone https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
+  ```
+  - Else (Gnome 42 or below):
+  ```
+  git clone --depth 1 --branch gnome-42-or-below https://github.com/LorenzoMorelli/GPU_profile_selector.git ~/.local/share/gnome-shell/extensions/GPU_profile_selector@lorenzo9904.gmail.com
+  ```
 
 ## Debuging and packaging
 
@@ -50,7 +55,6 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ```
 
 ## TODO
-- Split Gnome 42 and Gnome 43 releases.
 - After profile is changed add a text at the end (reboot needed).
 - Add a setting for allowing user to choose where to place the extension view between topbar and battery menu panel.
 - Add a notify for the case that the user didn't choose to reboot.
