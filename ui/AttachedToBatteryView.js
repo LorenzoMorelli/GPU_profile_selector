@@ -25,7 +25,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
 
     _init() {
         super._init({
-            label: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
+            title: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
             gicon : Gio.icon_new_for_string(Me.dir.get_path() + Utility.EXTENSION_ICON_FILE_NAME),
             toggleMode: true,
         });
