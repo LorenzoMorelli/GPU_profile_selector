@@ -55,7 +55,6 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ```
 
 ## TODO
-- After profile is changed add a text at the end (reboot needed).
-- Add a setting for allowing user to choose where to place the extension view between topbar and battery menu panel.
-- Add a notify for the case that the user didn't choose to reboot.
+- In "AttachedToBatteryView" change the title by getting it directly from envycontrol.
+- Add a setting for allowing user to choose where to place the extension view between topbar and menu panel.
 - Change the big V close the gpu profile with icon
