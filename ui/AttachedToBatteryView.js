@@ -25,8 +25,9 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
 
     _init() {
         super._init({
-            title: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
+            label: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
             gicon : Gio.icon_new_for_string(Me.dir.get_path() + Utility.EXTENSION_ICON_FILE_NAME),
+            title: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
             toggleMode: true,
         });
         
@@ -37,9 +38,21 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
         
         // You may also add sections of items to the menu
         this._itemsSection = new PopupMenu.PopupMenuSection();
-        this._itemsSection.addAction('Nvidia', () => Utility.switchNvidia(this.all_settings));
-        this._itemsSection.addAction('Hybrid', () => Utility.switchHybrid(this.all_settings));
-        this._itemsSection.addAction('Integrated', () => Utility.switchIntegrated());
+        this._itemsSection.addAction('Nvidia', () => {
+            Utility.switchNvidia(this.all_settings);
+            super.title = 'Nvidia'
+            this.menu.setHeader('selection-mode-symbolic', 'Nvidia (Reboot needed)', 'Choose a GPU mode');
+        });
+        this._itemsSection.addAction('Hybrid', () => {
+            Utility.switchHybrid(this.all_settings);
+            super.title = 'Hybrid'
+            this.menu.setHeader('selection-mode-symbolic', 'Hybrid (Reboot needed)', 'Choose a GPU mode');
+        });
+        this._itemsSection.addAction('Integrated', () => {
+            Utility.switchIntegrated();
+            super.title = 'Integrated'
+            this.menu.setHeader('selection-mode-symbolic', 'Integrated (Reboot needed)', 'Choose a GPU mode');
+        });
         this.menu.addMenuItem(this._itemsSection);
 
         // Add an entry-point for more settings
