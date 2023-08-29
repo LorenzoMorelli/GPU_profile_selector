@@ -17,7 +17,7 @@ export default class Extension {
     enable() {
         all_settings = this.getSettings();
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
-        if (Utility.isBatteryPlugged() && this._settings.get_boolean("force-topbar-view") !== true) {
+        if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
             this.extensionViewTopbar = false
             this.extensionView = AttachedToBatteryView.getAttachedToBatteryView(all_settings);
         } else {
