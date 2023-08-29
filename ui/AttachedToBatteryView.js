@@ -1,17 +1,16 @@
-const Main = imports.ui.main;
-const {St, GLib, GObject} = imports.gi;
-const Gio = imports.gi.Gio;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Util = imports.misc.util;
-const Clutter = imports.gi.Clutter;
-const QuickSettings = imports.ui.quickSettings;
-const Extension = ExtensionUtils.getCurrentExtension();
-const QuickSettingsMenu = imports.ui.main.panel.statusArea.quickSettings;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import GLib from 'gi:://GLib';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+import Clutter from 'gi://Clutter';
+import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import * as QuickSettingsMenu from 'resource:///org/gnome/shell/ui/panel/statusArea/quickSettingsMenu.js';
 
-const {Utility} = Me.imports.lib;
+import * as Utility from 'lib/Utility.js';
 
 const ICON_SIZE = 6;
 

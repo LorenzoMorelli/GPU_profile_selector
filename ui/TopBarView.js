@@ -1,15 +1,14 @@
-const Main = imports.ui.main;
-const {St, GLib} = imports.gi;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Util = imports.misc.util;
-const Clutter = imports.gi.Clutter;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import GLib from 'gi:://GLib';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+import Clutter from 'gi://Clutter';
 
-const {Utility} = Me.imports.lib;
+import * as Utility from 'lib/Utility.js';
 
 const ICON_SIZE = 6;
 const ICON_INTEL_FILE_NAME = '/img/intel_icon_plain.svg';
