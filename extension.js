@@ -1,24 +1,23 @@
-const Main = imports.ui.main;
-const {St, GLib} = imports.gi;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Util = imports.misc.util;
-const Clutter = imports.gi.Clutter;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import GLib from 'gi:://GLib';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Utility from 'lib/Utility.js';
+import * as TopBarView from 'ui/TopBarView.js';
+import * as AttachedToBatteryView from 'ui/AttachedToBatteryView.js';
 
-const {TopBarView, AttachedToBatteryView} = Me.imports.ui;
-const {Utility} = Me.imports.lib;
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+import Clutter from 'gi://Clutter';
+import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-
-class Extension {
+export default class Extension {
     enable() {
-        const all_settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
-        
+        all_settings = this.getSettings();
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
-        if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
+        if (Utility.isBatteryPlugged() && this._settings.get_boolean("force-topbar-view") !== true) {
             this.extensionViewTopbar = false
             this.extensionView = AttachedToBatteryView.getAttachedToBatteryView(all_settings);
         } else {
@@ -30,15 +29,14 @@ class Extension {
     }
 
     disable() {
-        this.extensionView.disable();
-        // also topbar popup must be destroyed
-        const all_settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
-        if (this.extensionViewTopbar !== null && this.extensionViewTopbar) {
-            this.extensionViewTopbar = null
-            this.extensionView.destroy();
+            this.extensionView.disable();
+            // also topbar popup must be destroyed
+            if (this.extensionViewTopbar !== null && this.extensionViewTopbar) {
+                this.extensionViewTopbar = null
+                this.extensionView.destroy();
+            }
+            this.extensionView = null;
         }
-        this.extensionView = null;
-    }
 }
 
 function init() {

@@ -1,16 +1,9 @@
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Gio = imports.gi.Gio;
-
-
-function init() {
-    ExtensionUtils.initTranslations("GPU_profile_selector");
-}
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import Gtk from 'gi://Gtk';
 
 function buildPrefsWidget () {
-    const settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+    const settings = this.getSettings();
     const buildable = new Gtk.Builder();
     buildable.add_from_file( Me.dir.get_path() + '/prefs.xml' );
 
