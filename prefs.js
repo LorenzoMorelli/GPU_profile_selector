@@ -9,8 +9,8 @@ function buildPrefsWidget () {
     this._extensionPreferences = extensionPreferences;
     this.settings = extensionPreferences.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
     this.buildable = new Gtk.Builder();
-    this._builder.set_translation_domain(extensionPreferences.metadata['gettext-domain']);
-    this._builder.add_from_file(`${extensionPreferences.path}/prefs.xml`);
+    this.buildable.set_translation_domain(extensionPreferences.metadata['gettext-domain']);
+    this.buildable.add_from_file(`${extensionPreferences.path}/prefs.xml`);
 
 
     const box = buildable.get_object('prefs_widget');
