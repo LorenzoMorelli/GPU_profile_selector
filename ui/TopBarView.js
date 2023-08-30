@@ -8,7 +8,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 import Clutter from 'gi://Clutter';
 
-import * as Utility from 'lib/Utility.js';
+import * as Utility from '../lib/Utility.js';
 
 const ICON_SIZE = 6;
 const ICON_INTEL_FILE_NAME = '/img/intel_icon_plain.svg';

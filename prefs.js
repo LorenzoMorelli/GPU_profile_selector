@@ -7,7 +7,6 @@ import {
     gettext as _
 } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-
 const GpuSelector = GObject.registerClass(
   {
     Implements: [Gtk.BuilderScope],
@@ -25,10 +24,10 @@ const GpuSelector = GObject.registerClass(
       this._builder.add_from_file(`${extensionPreferences.path}/prefs.xml`);
 
       const box = this._builder.get_object('prefs_widget');
-      this._bindSettings('rtd3', this._builder.get_object('field_rtd3'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._bindSettings('force-composition-pipeline', this._builder.get_object('field_force_composition_pipeline'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._bindSettings('coolbits', this._builder.get_object('field_coolbits'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._bindSettings('force-topbar-view', this._builder.get_object('field_force_topbar_view'), 'active', Gio.SettingsBindFlags.DEFAULT);
+      this._settings.bind('rtd3', this._builder.get_object('field_rtd3'), 'active', Gio.SettingsBindFlags.DEFAULT);
+      this._settings.bind('force-composition-pipeline', this._builder.get_object('field_force_composition_pipeline'), 'active', Gio.SettingsBindFlags.DEFAULT);
+      this._settings.bind('coolbits', this._builder.get_object('field_coolbits'), 'active', Gio.SettingsBindFlags.DEFAULT);
+      this._settings.bind('force-topbar-view', this._builder.get_object('field_force_topbar_view'), 'active', Gio.SettingsBindFlags.DEFAULT);
       return box;
     }
   }
