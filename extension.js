@@ -15,7 +15,7 @@ import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/ex
 
 export default class Extension {
     enable() {
-        all_settings = this.getSettings();
+        all_settings = this.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
         if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
             this.extensionViewTopbar = false
