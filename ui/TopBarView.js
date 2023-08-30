@@ -16,7 +16,7 @@ const ICON_NVIDIA_FILE_NAME = '/img/nvidia_icon_plain.svg';
 const ICON_HYBRID_FILE_NAME = '/img/hybrid_icon_plain.svg';
 
 
-var TopBarView = GObject.registerClass(
+const TopBarView = GObject.registerClass(
 class TopBarView extends PanelMenu.Button {  
     _init(all_settings) {
         super._init(0);
