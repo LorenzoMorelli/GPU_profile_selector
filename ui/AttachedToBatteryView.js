@@ -10,7 +10,7 @@ import Clutter from 'gi://Clutter';
 import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as QuickSettingsMenu from 'resource:///org/gnome/shell/ui/panel/statusArea/quickSettingsMenu.js';
 
-import * as Utility from 'lib/Utility.js';
+import * as Utility from '../lib/Utility.js';
 
 const ICON_SIZE = 6;
 

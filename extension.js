@@ -14,7 +14,6 @@ import Clutter from 'gi://Clutter';
 
 import * as Extension from 'resource:///org/gnome/shell/extensions/extension.js';
 
-
 export default class GpuSelector extends Extension.Extension {
     enable() {
         all_settings = this.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
