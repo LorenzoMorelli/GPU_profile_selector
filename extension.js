@@ -5,15 +5,17 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import * as Utility from 'lib/Utility.js';
-import * as TopBarView from 'ui/TopBarView.js';
-import * as AttachedToBatteryView from 'ui/AttachedToBatteryView.js';
+import {Utility} from './lib/Utility.js';
+import {TopBarView} from './ui/TopBarView.js';
+import {AttachedToBatteryView} from './ui/AttachedToBatteryView.js';
 
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 import Clutter from 'gi://Clutter';
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-export default class Extension {
+import * as Extension from 'resource:///org/gnome/shell/extensions/extension.js';
+
+
+export default class GpuSelector extends Extension.Extension {
     enable() {
         all_settings = this.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
         // if there is no battery, there is no power management panel, so the extension moves to TopBar
@@ -37,8 +39,4 @@ export default class Extension {
             }
             this.extensionView = null;
         }
-}
-
-function init() {
-    return new Extension();
 }

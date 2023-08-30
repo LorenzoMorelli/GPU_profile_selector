@@ -90,7 +90,7 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
     }
 });
 
-function getAttachedToBatteryView(all_settings) {
+export function getAttachedToBatteryView(all_settings) {
     return new AttachedToBatteryView(all_settings);
 }
 
