@@ -1,35 +1,54 @@
-import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
-import Gtk from 'gi://Gtk';
+import Adw from 'gi://Adw';
 
-import {
-    ExtensionPreferences,
-    gettext as _
-} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-const GpuSelector = GObject.registerClass(
-  {
-    Implements: [Gtk.BuilderScope],
-  },
-  class GpuSelectorSettings extends GObject.Object {
-    _init(extensionPreferences) {
-      super._init();
+export default class GpuProfileSwitcherPreferences extends ExtensionPreferences {
+    fillPreferencesWindow(window) {
+        // Create a preferences page, with a single group
+        const page = new Adw.PreferencesPage({
+            title: _('General'),
+            icon_name: 'dialog-information-symbolic',
+        });
+        
+        const group = new Adw.PreferencesGroup({
+            title: _('Appearance'),
+            description: _('Configure the appearance of the extension'),
+        });
 
-      this._extensionPreferences = extensionPreferences;
-      this._settings = extensionPreferences.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+        const row_rtd3 = new Adw.SwitchRow({
+            title: _('RTD3'),
+            subtitle: _('Enable RTD3'),
+        });
 
-      this._builder = new Gtk.Builder();
-      this._builder.set_scope(this);
-      this._builder.set_translation_domain(extensionPreferences.metadata['gettext-domain']);
-      this._builder.add_from_file(`${extensionPreferences.path}/prefs.xml`);
+        const row_force_composition_pipeline = new Adw.SwitchRow({
+            title: _('Force Composition Pipeline'),
+            subtitle: _('Enable force composition pipeline'),
+        });
 
-      const box = this._builder.get_object('prefs_widget');
-      this._settings.bind('rtd3', this._builder.get_object('field_rtd3'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._settings.bind('force-composition-pipeline', this._builder.get_object('field_force_composition_pipeline'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._settings.bind('coolbits', this._builder.get_object('field_coolbits'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      this._settings.bind('force-topbar-view', this._builder.get_object('field_force_topbar_view'), 'active', Gio.SettingsBindFlags.DEFAULT);
-      return box;
+        const row_coolbits = new Adw.SwitchRow({
+            title: _('Coolbits'),
+            subtitle: _('Enable Coolbits'),
+        });
+
+        const row_force_topbar_view = new Adw.SwitchRow({
+            title: _('Force Topbar View'),
+            subtitle: _('Enable force topbar view'),
+        });
+        
+        group.add(row_rtd3);
+        group.add(row_force_composition_pipeline);
+        group.add(row_coolbits);
+        group.add(row_force_topbar_view);
+
+        page.add(group);
+        
+        // Create a settings object and bind the row to the `show-indicator` key
+        window._settings = this.getSettings("org.gnome.shell.extensions.GPU_profile_selector");
+        window._settings.bind('rtd3', row_rtd3, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('force-composition-pipeline', row_force_composition_pipeline, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('coolbits', row_coolbits, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('force-topbar-view', row_force_topbar_view, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window.add(page);
     }
-  }
-);
-
+}
