@@ -8,12 +8,12 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 import Clutter from 'gi://Clutter';
 import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
-import * as QuickSettingsMenu from 'resource:///org/gnome/shell/ui/panel/statusArea/quickSettingsMenu.js';
+
+const QuickSettingsMenu = Main.panel.statusArea.quickSettings;
 
 import * as Utility from '../lib/Utility.js';
 
 const ICON_SIZE = 6;
-
 
 const AttachedToBatteryToggle = GObject.registerClass(
 class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
@@ -93,5 +93,3 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
 export function getAttachedToBatteryView(all_settings) {
     return new AttachedToBatteryView(all_settings);
 }
-
-
