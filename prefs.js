@@ -44,7 +44,7 @@ export default class GpuProfileSwitcherPreferences extends ExtensionPreferences 
         page.add(group);
         
         // Create a settings object and bind the row to the `show-indicator` key
-        window._settings = this.getSettings("org.gnome.shell.extensions.GPU_profile_selector");
+        window._settings = this.getSettings();
         window._settings.bind('rtd3', row_rtd3, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('force-composition-pipeline', row_force_composition_pipeline, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('coolbits', row_coolbits, 'active', Gio.SettingsBindFlags.DEFAULT);

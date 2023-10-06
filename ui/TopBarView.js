@@ -17,7 +17,7 @@ export const TopBarView = GObject.registerClass(
 class TopBarView extends PanelMenu.Button {  
     _init(extensionObject) {
         super._init(0);
-        this._all_settings = extensionObject.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+        this._all_settings = extensionObject.getSettings();
         this._extension_path = extensionObject.path;
     }
 
