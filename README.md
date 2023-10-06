@@ -41,7 +41,16 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 journalctl -f -o cat /usr/bin/gnome-shell
 ```
 
-### For looking updates using wayland (it opens a new wayland session in a window)
+### For debugging using wayland
+- To show all messages:
+```
+export G_MESSAGES_DEBUG=all
+```
+- To set window size:
+```
+export MUTTER_DEBUG_DUMMY_MODE_SPECS=1366X768
+```
+- To open a new wayland session in a window:
 ```
 dbus-run-session -- gnome-shell --nested --wayland
 ```
@@ -60,6 +69,6 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ## TODO
 - In "AttachedToBatteryView" change the title by getting it directly from envycontrol.
 - Automatically install envycontrol tool during extension installation phase.
-- Detect if envycontrol is not installed instead of prompting a restart in anycase.
+- Detect if envycontrol is not installed instead of prompting a restart popup in anycase.
 - Add a setting for allowing user to choose where to place the extension view between topbar and menu panel.
 - Change the big V close the gpu profile with icon.
