@@ -1,20 +1,19 @@
-const Main = imports.ui.main;
-const {St, GLib, GObject} = imports.gi;
-const Gio = imports.gi.Gio;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Util = imports.misc.util;
-const Clutter = imports.gi.Clutter;
-const QuickSettings = imports.ui.quickSettings;
-const Extension = ExtensionUtils.getCurrentExtension();
-const QuickSettingsMenu = imports.ui.main.panel.statusArea.quickSettings;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import GLib from 'gi:://GLib';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+import Clutter from 'gi://Clutter';
+import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
-const {Utility} = Me.imports.lib;
+const QuickSettingsMenu = Main.panel.statusArea.quickSettings;
+
+import * as Utility from '../lib/Utility.js';
 
 const ICON_SIZE = 6;
-
 
 const AttachedToBatteryToggle = GObject.registerClass(
 class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
@@ -91,8 +90,6 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
     }
 });
 
-function getAttachedToBatteryView(all_settings) {
+export function getAttachedToBatteryView(all_settings) {
     return new AttachedToBatteryView(all_settings);
 }
-
-
