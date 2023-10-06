@@ -1,14 +1,13 @@
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Extension from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import * as Utility from './lib/Utility.js';
 import * as TopBarView from './ui/TopBarView.js';
 import * as AttachedToBatteryView from './ui/AttachedToBatteryView.js';
 
 
 export default class GpuSelector extends Extension.Extension {
     enable() {
-        let all_settings = this.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+        let all_settings = this.getSettings();
         // Deprecated: if there is no battery, there is no power management panel, so the extension moves to TopBar
         // if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
         if (all_settings.get_boolean("force-topbar-view") !== true) {
@@ -29,8 +28,8 @@ export default class GpuSelector extends Extension.Extension {
     }
 
     disable() {
-            this._indicator.disable();
-            this._indicator.destroy();
-            this._indicator = null;
-        }
+        this._indicator.disable();
+        this._indicator.destroy();
+        this._indicator = null;
+    }
 }

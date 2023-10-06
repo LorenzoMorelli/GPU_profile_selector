@@ -14,7 +14,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
             iconName: 'selection-mode-symbolic',
             toggleMode: false, // disable the possibility to click the button
         });
-        this.all_settings = extensionObject.getSettings('org.gnome.shell.extensions.GPU_profile_selector');
+        this.all_settings = extensionObject.getSettings();
         
         // This function is unique to this class. It adds a nice header with an icon, title and optional subtitle.
         this.menu.setHeader('selection-mode-symbolic', Utility.capitalizeFirstLetter(Utility.getCurrentProfile()), 'Choose a GPU mode');
