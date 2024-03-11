@@ -67,6 +67,7 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ```
 
 ## TODO
+- Add setting for choosing shell path.
 - In "AttachedToBatteryView" change the title by getting it directly from envycontrol.
 - Automatically install envycontrol tool during extension installation phase.
 - Detect if envycontrol is not installed instead of prompting a restart popup in anycase.
