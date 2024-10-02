@@ -19,7 +19,7 @@ In particular this extension is a graphic interface for [envycontrol](https://gi
 - Install all the [dependencies](#Dependencies)
 - Enable extension in official [Gnome Extension](https://extensions.gnome.org/extension/5009/gpu-profile-selector/) store
 
-### AUR (not personally tested)
+### AUR
 - AUR link: [https://aur.archlinux.org/packages/gnome-shell-extension-gpu-profile-selector-git](https://aur.archlinux.org/packages/gnome-shell-extension-gpu-profile-selector-git)
 
 ### Manual
