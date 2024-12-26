@@ -13,6 +13,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
             title: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
             iconName: 'selection-mode-symbolic',
             toggleMode: false, // disable the possibility to click the button
+            checked: true,
         });
         this.all_settings = extensionObject.getSettings();
         
