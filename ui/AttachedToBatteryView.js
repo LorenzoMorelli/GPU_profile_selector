@@ -9,16 +9,24 @@ import * as Utility from '../lib/Utility.js';
 export const AttachedToBatteryToggle = GObject.registerClass(
 class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
     _init(extensionObject) {
+        const currentProfile = Utility.getCurrentProfile();
         super._init({
-            title: Utility.capitalizeFirstLetter(Utility.getCurrentProfile()),
+            title: currentProfile === Utility.GPU_PROFILE_UNKNOWN
+                ? 'GPU Profile'
+                : Utility.capitalizeFirstLetter(currentProfile),
             iconName: 'selection-mode-symbolic',
             toggleMode: false, // disable the possibility to click the button
+            checked: true,
         });
         this.all_settings = extensionObject.getSettings();
-        
+
+        const headerTitle = currentProfile === Utility.GPU_PROFILE_UNKNOWN
+            ? 'Select GPU Profile'
+            : Utility.capitalizeFirstLetter(currentProfile);
+
         // This function is unique to this class. It adds a nice header with an icon, title and optional subtitle.
-        this.menu.setHeader('selection-mode-symbolic', Utility.capitalizeFirstLetter(Utility.getCurrentProfile()), 'Choose a GPU mode');
-        
+        this.menu.setHeader('selection-mode-symbolic', headerTitle, 'Choose a GPU mode');
+
         // add a sections of items to the menu
         this._itemsSection = new PopupMenu.PopupMenuSection();
         this._itemsSection.addAction('Nvidia', () => {
@@ -40,9 +48,11 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
 
         // Add an entry-point for more settings
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        const settingsItem = this.menu.addAction('More Settings',
-            () => extensionObject.openPreferences());
-            
+        const settingsItem = this.menu.addAction(
+            'More Settings',
+            () => extensionObject.openPreferences()
+        );
+
         // Ensure the settings are unavailable when the screen is locked
         settingsItem.visible = Main.sessionMode.allowSettings;
         this.menu._settingsActions[extensionObject.uuid] = settingsItem;

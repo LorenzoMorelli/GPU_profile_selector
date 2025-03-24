@@ -14,7 +14,7 @@ const ICON_HYBRID_FILE_NAME = '/img/hybrid_icon_plain.svg';
 
 
 export const TopBarView = GObject.registerClass(
-class TopBarView extends PanelMenu.Button {  
+class TopBarView extends PanelMenu.Button {
     _init(extensionObject) {
         super._init(0);
         this._all_settings = extensionObject.getSettings();
@@ -104,12 +104,18 @@ class TopBarView extends PanelMenu.Button {
                 gicon : Gio.icon_new_for_string(this._extension_path + ICON_HYBRID_FILE_NAME),
                 style_class: 'system-status-icon',
             });
-        } else {
+        } else if(gpu_profile === Utility.GPU_PROFILE_NVIDIA) {
             this.integrated_menu_item.remove_child(this.icon_selector);
             this.hybrid_menu_item.remove_child(this.icon_selector);
             this.nvidia_menu_item.add_child(this.icon_selector);
             this.icon_top = new St.Icon({
                 gicon : Gio.icon_new_for_string(this._extension_path + ICON_NVIDIA_FILE_NAME),
+                style_class: 'system-status-icon',
+            });
+        } else {
+            // Default state for unknown profile
+            this.icon_top = new St.Icon({
+                gicon : Gio.icon_new_for_string(this._extension_path + Utility.EXTENSION_ICON_FILE_NAME),
                 style_class: 'system-status-icon',
             });
         }
