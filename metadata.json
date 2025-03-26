@@ -4,7 +4,8 @@
   "shell-version": [
     "45",
     "46",
-    "47"
+    "47",
+    "48"
   ],
   "gettext-domain": "GPU_profile_selector",
   "url": "https://github.com/LorenzoMorelli/GPU_profile_selector",
