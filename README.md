@@ -67,9 +67,8 @@ gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
 ```
 
 ## TODO
-- Add setting for choosing shell path.
-- In "AttachedToBatteryView" change the title by getting it directly from envycontrol.
-- Automatically install envycontrol tool during extension installation phase.
+- When in unknown state, the icon is missing.
+- Add setting to choose shell path.
+- If restart prompt is canceled, then re-query the current state from envycontrol.
 - Detect if envycontrol is not installed instead of prompting a restart popup in anycase.
-- Add a setting for allowing user to choose where to place the extension view between topbar and menu panel.
-- Change the big V close the gpu profile with icon.
+- Automatically install envycontrol tool during extension installation phase.
