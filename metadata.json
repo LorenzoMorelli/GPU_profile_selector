@@ -12,7 +12,7 @@
   "url": "https://github.com/LorenzoMorelli/GPU_profile_selector",
   "uuid": "GPU_profile_selector@lorenzo9904.gmail.com",
   "settings-schema": "org.gnome.shell.extensions.GPU_profile_selector",
-  "version": 21,
+  "version": 23,
   "author": "Lorenzo Morelli",
   "contributors": [
     "Lorenzo Morelli",
