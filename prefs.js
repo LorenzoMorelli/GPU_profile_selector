@@ -12,23 +12,23 @@ export default class GpuProfileSwitcherPreferences extends ExtensionPreferences 
         });
         
         const group = new Adw.PreferencesGroup({
-            title: _('Appearance'),
-            description: _('Configure the appearance of the extension'),
+            title: _('Settings'),
+            description: _('Adjust extension and GPU profile switching options'),
         });
 
         const row_rtd3 = new Adw.SwitchRow({
             title: _('RTD3'),
-            subtitle: _('Enable RTD3'),
+            subtitle: _('Enable PCI-Express Runtime D3 (RTD3) Power Management on Hybrid mode. When not disabled, RTD3 allows the dGPU to be dynamically turned off when not in use'),
         });
 
         const row_force_composition_pipeline = new Adw.SwitchRow({
             title: _('Force Composition Pipeline'),
-            subtitle: _('Enable force composition pipeline'),
+            subtitle: _('Enable ForceCompositionPipeline on Nvidia mode. Use this option if facing screen tearing'),
         });
 
         const row_coolbits = new Adw.SwitchRow({
             title: _('Coolbits'),
-            subtitle: _('Enable Coolbits'),
+            subtitle: _('Enable Coolbits, which allows overlocking on Nvidia mode (not recommended)'),
         });
 
         const row_force_topbar_view = new Adw.SwitchRow({
