@@ -1,2 +1,5 @@
 .DS_Store
 schemas/gschemas.compiled
+node_modules/
+dist/
+*.zip
