@@ -14,6 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
       - name: Read version from metadata.json
         id: meta
         run: |
@@ -32,25 +38,30 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Install dependencies
+        if: steps.check.outputs.exists == 'false'
+        run: npm ci
+
+      - name: Build TypeScript
+        if: steps.check.outputs.exists == 'false'
+        run: npm run build
+
+      - name: Copy assets to dist
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          cp metadata.json dist/
+          cp -r schemas dist/
+          cp -r img dist/
+
       - name: Compile schemas
         if: steps.check.outputs.exists == 'false'
-        run: glib-compile-schemas schemas/
+        run: glib-compile-schemas dist/schemas/
 
       - name: Package extension
         if: steps.check.outputs.exists == 'false'
         run: |
           UUID=$(jq -r '.uuid' metadata.json)
-          zip -r "${UUID}.zip" \
-            metadata.json \
-            extension.js \
-            prefs.js \
-            lib/ \
-            ui/ \
-            schemas/ \
-            img/icon.png \
-            img/intel_icon_plain.svg \
-            img/nvidia_icon_plain.svg \
-            img/hybrid_icon_plain.svg
+          cd dist && zip -r "../${UUID}.zip" .
 
       - name: Create release
         if: steps.check.outputs.exists == 'false'
