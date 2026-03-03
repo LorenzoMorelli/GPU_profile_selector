@@ -4,7 +4,9 @@
 A GNOME Shell extension that provides an easy way to switch between GPU profiles on Nvidia Optimus systems (i.e. laptops with Intel + Nvidia or AMD + Nvidia configurations) in a few clicks.
 This extension is a graphical interface for [envycontrol](https://github.com/bayasdev/envycontrol).
 
-![screenshot example](./img/extension_screenshot.png)
+| GNOME 43+ (Quick Settings) | GNOME 42 or below (Top Bar) |
+|:--:|:--:|
+| ![GNOME 43+](./img/extension_screenshot-gnome-43-or-above.png) | ![GNOME 42 or below](./img/extension_screenshot-gnome-42-or-below.png) |
 
 ## Dependencies
 - [pkexec](https://command-not-found.com/pkexec)
