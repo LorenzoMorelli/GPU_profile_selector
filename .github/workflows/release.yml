@@ -1,0 +1,64 @@
+name: Release Extension
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from metadata.json
+        id: meta
+        run: |
+          VERSION=$(jq -r '.version' metadata.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if release already exists
+        id: check
+        run: |
+          if gh release view "v${{ steps.meta.outputs.version }}" > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Compile schemas
+        if: steps.check.outputs.exists == 'false'
+        run: glib-compile-schemas schemas/
+
+      - name: Package extension
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          UUID=$(jq -r '.uuid' metadata.json)
+          zip -r "${UUID}.zip" \
+            metadata.json \
+            extension.js \
+            prefs.js \
+            lib/ \
+            ui/ \
+            schemas/ \
+            img/icon.png \
+            img/intel_icon_plain.svg \
+            img/nvidia_icon_plain.svg \
+            img/hybrid_icon_plain.svg
+
+      - name: Create release
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          UUID=$(jq -r '.uuid' metadata.json)
+          gh release create "${{ steps.meta.outputs.tag }}" \
+            "${UUID}.zip" \
+            --title "Version ${{ steps.meta.outputs.version }}" \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

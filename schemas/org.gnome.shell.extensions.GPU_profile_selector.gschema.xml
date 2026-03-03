@@ -27,7 +27,7 @@
     </key>
 
     <key name="coolbits" type="b">
-      <default>true</default>
+      <default>false</default>
         <summary>Enable Coolbits?</summary>
         <description>
             If true, envycontrol set the Coolbits flag enabled
