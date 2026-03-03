@@ -22,7 +22,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
             toggleMode: false, // disable the possibility to click the button
             checked: this.activeProfile === 'hybrid' || this.activeProfile === 'nvidia',
         });
-        this.all_settings = extensionObject.getSettings();
+        this._all_settings = extensionObject.getSettings();
 
         // This function is unique to this class. It adds a nice header with an icon, title and optional subtitle.
         this.menu.setHeader('power-profile-performance-symbolic', super.title, 'Choose a GPU mode');
@@ -42,7 +42,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
                 this.doNotSwitch = true;
                 super.subtitle = 'Switching...';
                 this.menu.setHeader('power-profile-performance-symbolic', super.title, 'Switching to Hybrid mode...');
-                Utility.switchHybrid(this.all_settings, this._onSwitchComplete.bind(this));
+                Utility.switchHybrid(this._all_settings, this._onSwitchComplete.bind(this));
             }
         });
         this._itemsSection.addAction('Nvidia'+ (this.activeProfile === 'nvidia' ? ' (Active)' : ''), () => {
@@ -50,7 +50,7 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
                 this.doNotSwitch = true;
                 super.subtitle = 'Switching...';
                 this.menu.setHeader('power-profile-performance-symbolic', super.title, 'Switching to Nvidia mode...');
-                Utility.switchNvidia(this.all_settings, this._onSwitchComplete.bind(this));
+                Utility.switchNvidia(this._all_settings, this._onSwitchComplete.bind(this));
             }
         });
         this.menu.addMenuItem(this._itemsSection);
@@ -109,7 +109,7 @@ class AttachedToBatteryView extends QuickSettings.SystemIndicator {
 
     enable() {
         this._indicator = this._addIndicator();
-        this._indicator.icon_name = 'power-profile-performance-symbolic' //Gio.icon_new_for_string(Me.dir.get_path() + Utility.ICON_SELECTOR_FILE_NAME);
+        this._indicator.icon_name = 'power-profile-performance-symbolic';
         this._indicator.visible = false;
     }
 
