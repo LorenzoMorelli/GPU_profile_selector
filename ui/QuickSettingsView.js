@@ -5,8 +5,8 @@ import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js'
 
 import * as Utility from '../lib/Utility.js';
 
-export const AttachedToBatteryToggle = GObject.registerClass(
-class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {  
+export const QuickSettingsToggle = GObject.registerClass(
+class QuickSettingsToggle extends QuickSettings.QuickMenuToggle {  
     _init(extensionObject) {
         this.activeProfile = Utility.getCurrentProfile(); // initialzied profile since startup
         this.chosenProfile = this.activeProfile === Utility.GPU_PROFILE_UNKNOWN // currently selected profile
@@ -101,8 +101,8 @@ class AttachedToBatteryToggle extends QuickSettings.QuickMenuToggle {
     }
 });
 
-export const AttachedToBatteryView = GObject.registerClass(
-class AttachedToBatteryView extends QuickSettings.SystemIndicator {
+export const QuickSettingsIndicator = GObject.registerClass(
+class QuickSettingsIndicator extends QuickSettings.SystemIndicator {
     _init(extensionObject) {
         super._init();
     }
