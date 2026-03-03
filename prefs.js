@@ -28,7 +28,7 @@ export default class GpuProfileSwitcherPreferences extends ExtensionPreferences 
 
         const row_coolbits = new Adw.SwitchRow({
             title: _('Coolbits'),
-            subtitle: _('Enable Coolbits, which allows overlocking on Nvidia mode (not recommended)'),
+            subtitle: _('Enable Coolbits, which allows overclocking on Nvidia mode (not recommended)'),
         });
 
         const row_force_topbar_view = new Adw.SwitchRow({
@@ -43,7 +43,6 @@ export default class GpuProfileSwitcherPreferences extends ExtensionPreferences 
 
         page.add(group);
         
-        // Create a settings object and bind the row to the `show-indicator` key
         window._settings = this.getSettings();
         window._settings.bind('rtd3', row_rtd3, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('force-composition-pipeline', row_force_composition_pipeline, 'active', Gio.SettingsBindFlags.DEFAULT);
