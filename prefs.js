@@ -28,7 +28,7 @@ export default class GpuProfileSwitcherPreferences extends ExtensionPreferences 
 
         const row_coolbits = new Adw.SwitchRow({
             title: _('Coolbits'),
-            subtitle: _('Enable Coolbits, which allows overlocking on Nvidia mode (not recommended)'),
+            subtitle: _('Enable Coolbits, which allows overclocking on Nvidia mode (not recommended)'),
         });
 
         const row_force_topbar_view = new Adw.SwitchRow({

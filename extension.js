@@ -8,8 +8,6 @@ import * as AttachedToBatteryView from './ui/AttachedToBatteryView.js';
 export default class GpuSelector extends Extension.Extension {
     enable() {
         let all_settings = this.getSettings();
-        // Deprecated: if there is no battery, there is no power management panel, so the extension moves to TopBar
-        // if (Utility.isBatteryPlugged() && all_settings.get_boolean("force-topbar-view") !== true) {
         if (all_settings.get_boolean("force-topbar-view") !== true) {
             // init the indicator object
             this._indicator = new AttachedToBatteryView.AttachedToBatteryView(this);
