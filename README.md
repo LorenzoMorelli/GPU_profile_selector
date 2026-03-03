@@ -54,6 +54,11 @@ export MUTTER_DEBUG_DUMMY_MODE_SPECS=1366X768
 dbus-run-session -- gnome-shell --nested --wayland
 ```
 
+### For compiling changes in settings schema
+```
+glib-compile-schemas /path/to/extension/GPU_profile_selector@lorenzo9904.gmail.com/schemas/
+```
+
 ### Packaging the extension source for gnome extension website
 ```
 gnome-extensions pack GPU_profile_selector@lorenzo9904.gmail.com \
