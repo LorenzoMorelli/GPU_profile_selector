@@ -6,13 +6,14 @@
     "46",
     "47",
     "48",
-    "49"
+    "49",
+    "50"
   ],
   "gettext-domain": "GPU_profile_selector",
   "url": "https://github.com/LorenzoMorelli/GPU_profile_selector",
   "uuid": "GPU_profile_selector@lorenzo9904.gmail.com",
   "settings-schema": "org.gnome.shell.extensions.GPU_profile_selector",
-  "version": 25,
+  "version": 26,
   "author": "Lorenzo Morelli",
   "contributors": [
     "Lorenzo Morelli",
